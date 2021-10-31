@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="shortcut icon" href="assets/img/fav.png" type="image/x-icon">
+    <!-- ========================================= Css files -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+
+    <title>GINFT - gifting NFTs</title>
+
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/jsbn.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/random.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/hash.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/rsa.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/aes.js"></script>
+    <script language="JavaScript" type="text/javascript" src="assets/cryptico/api.js"></script>
+
+    <script src="assets/js/script.js"></script>
+
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light bg-light p-2 ">
+        <a class="navbar-brand">
+            <h2>GINFT</h2>
+        </a>
+        <form class="form-inline">
+            <ul class="nav justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="create.html">Create</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="verify.html">Verify</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="about.html">About</a>
+                </li>
+            </ul>
+        </form>
+    </nav>
+
+    <div class="section is-lg section-help section-grey my-5">
+        <div class="container">
+            <h2 class="m-5">
+                <center>Create NFT token</center>
+            </h2>
+            <div class="row">
+                <div class="col-md-2"></div>
+                <div class="col-md-8">
+                    <h5>Write down your message for your intended reciepent and we will make a token out of it. Magic. Sounds good? Try!</h5>
+                    <p class="lead text-italic">To ensure unique integrity, using full name is encouraged</p><br>
+
+                    <div class="card bg-light mb-3">
+                        <div class="card-header">
+                            <h4 class="card-title">NFT Card</h4>
+                            <div class="row form-row my-3">
+                                <div class="col">
+                                    <label>Sender's name</label>
+                                    <input type="text" id="sender" class="form-control" placeholder="Jason M Derith">
+                                </div>
+                                <div class="col">
+                                    <label>Reciever's name</label>
+                                    <input type="text" id="receiver" class="form-control" placeholder="Angela Schrute">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+
+                            <div class="form-group my-3">
+                                <label>
+                                    Message
+                                    <small id="charNum" style="float: right;">200 characters remaining</small>
+                              
+                                </label>
+                                <textarea id="message" placeholder="Love you to the moon and Back" class="form-control has-style1" name="message" onkeyup="countChars(this);"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter" onclick="getMsg()">SUBMIT</button>
+                    <!-- Button trigger modal -->
+
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Passphrase</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">x</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>
+                                            
+                                            <small>This will be used to unlock and access your token. <b>Please write it down. We won't be able to help you without that</b></small>
+                                        </label>
+                                        <span class="badge rounded-pill bg-warning">Case Sensitive!</span>
+                                        <textarea name="passphrase" placeholder="The quick brown fox jumps over the lazy dog" class="form-control has-style1 my-2" id="pass"></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" onclick="getPass()">Generate</button>
+                                </div>
+
+
+
+                                <div id="result" class="p-1" style="display:none;">
+                                    <h3>Generated Token</h3>
+                                    <hr>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class="alert alert-danger">
+
+                                                <strong>Remember to Save!</strong> Tokens are not stored on our server and will be lost if you do not save it. Create and download the token file.
+                                            </div>
+                                            <label>
+                                                Your TOKEN<br>
+                
+                                            </label>
+                                            <textarea name="passphrase" class="form-control has-style1 my-2" id="token" name="token " readonly></textarea>
+                                            <button id="create" class="btn btn-primary btn-block">Create file</button>
+                                            <a class="btn btn-warning" download="NFT.txt" id="downloadlink" style="display: none">Download</a>
+                                        </div>
+
+                                        <div class="alert alert-dismissible alert-warning mt-3">
+                                            <h4 class="alert-heading">Warning!</h4>
+                                            <p class="mb-0">Token ID and Public Token String are not used to create your token, but will be useful while verifying the tokens. It is advised to save them as well, as it may be important while verification</a>.</p>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label>Your Token ID</label>
+                                            <br>
+                                            <small>This will be used to identify your token</small>
+                                            <input name="uid " type="text " class="form-control " id="keyid" readonly>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Your Public Key String</label>
+                                            <br>
+                                            <small>This will be used to identify your token</small>
+                                            <textarea name="uid " type="text " class="form-control " id="keystring" readonly></textarea>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="col-md-2 "></div>
+            </div>
+
+
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center text-lg-start ">
+        <!-- Copyright -->
+        <div class="text-center p-3 text-white ">
+            <h5>All Rights Reserved © 2021</h5>
+            <p class="lead text-muted ">
+                GINFT &mdash; <a href="https://jedetin.github.io ">jedetin.github.io</a></p>
+        </div>
+        <!-- Copyright -->
+    </footer>
+    <script src="assets/js/jQuery.min.js "></script>
+    <script src="assets/js/all.min.js "></script>
+    <script src="assets/bootstrap.min.js "></script>
+    <script src="assets/js/typed.js "></script>
+</body>
+
+</html>
